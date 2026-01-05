@@ -21,9 +21,10 @@ echo `date` > runtime.txt
 export buildroot=`pwd`
 
 # NOTE link to your appropriate files here:
-prebuilt=/home/sara/Downloads/focal.aarch64.2.7.0_2021_11_17.tar.gz
-bsp=/home/sara/Downloads/xilinx-zcu216-v2020.2-final.bsp
- 
+#prebuilt=/home/charlie/focal.aarch64.2.7.0_2021_11_17.tar.gz
+#bsp=/home/charlie/xilinx-zcu216-v2020.2-final.bsp
+prebuilt=/home/charlie/Avnet/jammy.aarch64.3.1.0.tar.gz
+bsp=/home/charlie/Avnet/xilinx-zcu216-v2024.1-05230256.bsp
 
 if [ ! -e "$prebuilt" ]; then
 
@@ -45,7 +46,7 @@ fi
 
 pushd ZCU216-PYNQ/ZCU216
 
-ln -s $bsp
+#ln -s $bsp
 
 popd
 
@@ -57,7 +58,7 @@ pushd ZCU216-PYNQ/PYNQ
 
 echo "" > build.sh
 
-git commit -a -m "clean out build.sh"
+#git commit -a -m "clean out build.sh"
 
 popd
 
@@ -66,14 +67,14 @@ popd
 cp -a ZCU216-PYNQ/tics/. ZCU216-PYNQ/PYNQ/sdbuild/packages/xrfclk/package/xrfclk/
 
 pushd ZCU216-PYNQ/PYNQ/sdbuild
-
-make BOARDDIR=$buildroot/ZCU216-PYNQ PREBUILT=$prebuilt
+export PYNQ_SKIP_SW_REPO=1
+make REBUILD_PYNQ_SDIST=False REBUILD_PYNQ_ROOTFS=True  BOARDS=ZCU216 BOARDDIR=$buildroot/ZCU216-PYNQ PREBUILT=$prebuilt
 
  
 
 BOARD=ZCU216
 
-VERSION=2.7.0
+VERSION=3.1.2
 
 boardname=$(echo ${BOARD} | tr '[:upper:]' '[:lower:]' | tr - _)
 
